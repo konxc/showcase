@@ -122,13 +122,6 @@
         .float-animation {
             animation: float 3s ease-in-out infinite;
         }
-        
-        /* PENINGKATAN CTA & FOOTER: Countdown Timer */
-        .countdown {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
 
         /* ========== STICKY NAVIGATION ========== */
         .sticky-nav {
@@ -822,116 +815,41 @@
             padding: 0 25px 25px 25px;
         }
 
-        /* ========== FINAL CTA SECTION (DIUBAH) ========== */
+        /* ========== FINAL CTA SECTION ========== */
         .final-cta {
             text-align: center;
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             padding: 120px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .final-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://source.unsplash.com/random/1600x900/?fireworks,celebration,night') no-repeat center center/cover;
-            opacity: 0.2;
-            z-index: 1;
-        }
-
-        .final-cta .container {
-            position: relative;
-            z-index: 2;
         }
 
         .final-cta h2 {
             color: var(--text-primary);
-            margin-bottom: 1rem;
-            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .final-cta p {
             font-size: 1.2rem;
             color: rgba(255,255,255,0.9);
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
         }
 
-        .final-cta .cta-grid {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 2rem;
-        }
-
-        .final-cta .countdown-timer {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #FFD700; /* Warna emas untuk menonjol */
-            padding: 10px 20px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        .final-cta .testimonial {
-            font-style: italic;
-            max-width: 500px;
-            margin: 0 auto;
-            color: rgba(255,255,255,0.8);
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        
-        .final-cta .author {
-            font-weight: 600;
-            margin-top: 10px;
-            color: var(--text-primary);
-        }
-
-        .final-cta .author .stars {
-            color: #FFD700;
-            margin-left: 5px;
-        }
-
-        /* PENINGKATAN FOOTER: Newsletter Form */
-        .newsletter-form {
-            display: flex;
-            gap: 10px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .newsletter-form input {
-            flex-grow: 1;
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--border-color);
-            border-radius: 50px 0 0 50px;
-            color: var(--text-primary);
-        }
-
-        .newsletter-form input::placeholder {
+        /* ========== PENINGKATAN FOOTER & FINAL CTA ========== */
+        .footer {
+            background: linear-gradient(180deg, #0a0a0a, #1a1a1a);
+            background-image: url('https://www.transparenttextures.com/patterns/dark-denim-3.png');
+            padding: 80px 0 0 0;
             color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
         }
-
-        .newsletter-form .btn {
-            padding: 15px 30px;
-            white-space: nowrap;
-        }
-
-        /* ========== FOOTER YANG TELAH DIPERBAIKI ========== */
-        footer {
-            background-color: #0a0a0a;
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.02) 35px, transparent);
-            border-top: 1px solid var(--border-color);
-            padding: 80px 0 20px 0;
-            color: var(--text-secondary);
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.1), transparent);
+            z-index: 1;
         }
 
         .footer-content {
@@ -939,24 +857,14 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
             margin-bottom: 40px;
-            text-align: left;
+            position: relative;
+            z-index: 2;
         }
 
         .footer-column h4 {
             margin-bottom: 20px;
             color: var(--primary-color);
             font-size: 1.2rem;
-            position: relative;
-            padding-left: 15px;
-        }
-
-        .footer-column h4::before {
-            content: '▶';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
         }
 
         .footer-column ul {
@@ -964,9 +872,7 @@
         }
 
         .footer-column ul li {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
+            margin-bottom: 15px;
             transition: transform 0.2s ease;
         }
         
@@ -977,13 +883,12 @@
         .footer-column a {
             color: var(--text-secondary);
             transition: color 0.3s ease;
-            display: flex;
-            align-items: center;
+            font-weight: 500;
         }
 
         .footer-column a i {
             margin-right: 10px;
-            width: 16px;
+            width: 20px;
             text-align: center;
         }
 
@@ -991,6 +896,37 @@
             color: var(--secondary-color);
         }
         
+        .footer-column .newsletter-form {
+            display: flex;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .footer-column .newsletter-form input {
+            flex-grow: 1;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-primary);
+        }
+        .footer-column .newsletter-form input::placeholder {
+            color: var(--text-secondary);
+        }
+        .footer-column .newsletter-form button {
+            padding: 12px 20px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .footer-column .newsletter-form button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
         .payment-methods {
             display: flex;
             gap: 15px;
@@ -999,15 +935,14 @@
         }
 
         .payment-methods img {
-            height: 30px;
-            filter: grayscale(100%);
-            opacity: 0.7;
+            height: 35px;
+            filter: grayscale(100%) brightness(0.7);
             transition: all 0.3s ease;
+            border-radius: 5px;
         }
 
         .payment-methods img:hover {
-            filter: grayscale(0%);
-            opacity: 1;
+            filter: grayscale(0%) brightness(1);
             transform: scale(1.1);
         }
 
@@ -1025,23 +960,144 @@
 
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid var(--border-color);
             font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-bottom .rating-badge {
+            margin-top: 15px;
+        }
+        .footer-bottom .rating-badge img {
+            height: 25px;
         }
 
-        /* ========== RESPONSIVE DESIGN ========== */
+        /* PENINGKATAN FINAL CTA */
+        .final-cta {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(254, 44, 85, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .final-cta .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .final-cta .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .final-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .final-cta p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .final-cta .testimonial-snippet {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        .final-cta .testimonial-snippet .author {
+            text-align: right;
+            font-weight: 600;
+            margin-top: 10px;
+            color: var(--primary-color);
+        }
+
+        .final-cta .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .final-cta .btn-primary {
+            background: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(254, 44, 85, 0.4);
+        }
+        .final-cta .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--text-primary);
+            color: var(--text-primary);
+        }
+        .final-cta .btn-secondary:hover {
+            background: var(--text-primary);
+            color: var(--dark-bg);
+        }
+        .final-cta .btn-secondary i {
+            margin-right: 8px;
+        }
+
+        /* ========== MODIFIKASI FOOTER: Back to Top Button ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(254, 44, 85, 0.4);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        /* ========== RESPONSIVE DESIGN IMPROVEMENTS ========== */
         @media (max-width: 992px) {
             h1 { font-size: 3rem; }
             h2 { font-size: 2.2rem; }
             .sticky-nav .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
-            .footer-content { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+            .footer-content { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
         }
 
         @media (max-width: 768px) {
@@ -1053,15 +1109,13 @@
             section { padding: 80px 0; }
             .footer-content { grid-template-columns: 1fr; text-align: center; }
             .footer-column h4 { padding-left: 0; }
-            .footer-column h4::before { display: none; }
             .footer-column ul li { justify-content: center; }
             .footer-column ul li:hover { transform: none; }
             .payment-methods { justify-content: center; }
             .back-to-top { bottom: 20px; right: 20px; }
-            .final-cta .container { padding: 0 20px; }
-            .final-cta h2 { font-size: 2rem; }
-            .final-cta .newsletter-form { flex-direction: column; }
-            .final-cta .testimonial { font-size: 0.9rem; }
+            
+            .final-cta .cta-buttons { flex-direction: column; align-items: center; }
+            .final-cta .btn { width: 100%; max-width: 300px; }
         }
     </style>
 </head>
@@ -1481,107 +1535,88 @@
             </div>
         </section>
 
-        <!-- PENINGKATAN CTA & FOOTER: Final CTA & Footer Baru -->
+        <!-- ========== FINAL CTA SECTION (Ditingkatkan) ========== -->
         <section id="final-cta" class="final-cta hidden">
             <div class="container">
-                <h2>Jangan Tunggu Lagi, Waktumu Meledak di TikTok Dimulai Sekarang!</h2>
-                <p>Dapatkan penawaran spesial dan wujudkan potensi maksimal akunmu bersama kami.</p>
-                
-                <div class="cta-grid">
-                    <div class="countdown-timer">
-                        <i class="fas fa-clock"></i>
-                        <span id="countdown-timer">00:00:00</span>
+                <div class="cta-content">
+                    <h2 class="hidden">Waktunya Menjadi Bintang TikTok!</h2>
+                    <p class="hidden">Bergabung dengan 10.000+ kreator lainnya. Jangan biarkan mimpi, wujudkan kesuksesanmu sekarang juga.</p>
+                    
+                    <div class="testimonial-snippet hidden">
+                        <p>"Layanan yang sangat memuaskan. Follower saya naik 20k dalam 2 minggu dan akun jadi terlihat profesional. Terima kasih!"</p>
+                        <p class="author">- Andi K., Influencer</p>
                     </div>
-                    <a href="#pricing" class="btn">Ya, Saya Mau Naikin Followers Sekarang!</a>
-                </div>
-                
-                <div class="testimonial">
-                    <p>"Ini adalah layanan tercepat dan terpercaya yang pernah saya gunakan. Follower naik 20k dalam 3 hari. Top banget!"</p>
-                    <div class="author">
-                        <span>- @userjagoanviral</span>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
+
+                    <div class="cta-buttons hidden">
+                        <a href="#pricing" class="btn btn-primary hidden">Ya, Saya Mau Naikin Followers Sekarang!</a>
+                        <a href="https://wa.me/628123456789" class="btn btn-secondary hidden"><i class="fas fa-comments"></i> Tanya Dulu Ahli</a>
                     </div>
                 </div>
             </div>
         </section>
+    </main>
 
-        <!-- ========== FOOTER YANG TELAH DIPERBAIKI ========== -->
-        <footer>
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-column">
-                        <h4>Tentang Kami</h4>
-                        <p>Jasa SMM TikTok Terpercaya #1 di Indonesia untuk membantu akun Anda berkembang pesat.</p>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Layanan</h4>
-                        <ul>
-                            <li><a href="#pricing"><i class="fas fa-user-plus"></i>TikTok Followers</a></li>
-                            <li><a href="#pricing"><i class="fas fa-heart"></i>TikTok Likes</a></li>
-                            <li><a href="#pricing"><i class="fas fa-eye"></i>TikTok Views</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Bantuan</h4>
-                        <ul>
-                            <li><a href="https://wa.me/628123456789"><i class="fas fa-headset"></i>Hubungi Kami</a></li>
-                            <li><a href="#faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
-                            <li><a href="#"><i class="fas fa-file-contract"></i>Syarat & Ketentuan</a></li>
-                            <li><a href="#"><i class="fas fa-user-shield"></i>Kebijakan Privasi</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Newsletter</h4>
-                        <p>Dapatkan tips dan penawaran eksklusif langsung di inbox Anda!</p>
-                        <form class="newsletter-form" id="newsletter-form">
-                            <input type="email" placeholder="Masukkan email Anda" required>
-                            <button type="submit" class="btn">Langganan</button>
-                        </form>
+    <!-- ========== FOOTER YANG DIPERBAIKI ========== -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Tentang Kami</h4>
+                    <p>Kami adalah penyedia layanan SMM TikTok terpercaya di Indonesia, berkomitmen untuk membantu akun Anda berkembang pesat dan aman.</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Email Anda">
+                        <button type="submit">Daftar</button>
                     </div>
                 </div>
-                <div class="footer-content-bottom">
-                    <div class="footer-column">
-                        <h4>Metode Pembayaran</h4>
-                        <div class="payment-methods">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Bank_BCA_logo.svg/2560px-Bank_BCA_logo.svg.png" alt="BCA" title="Bank BCA">
-                            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/a/a9/Logo_bank_mandiri.svg/2560px-Logo_bank_mandiri.svg.png" alt="Mandiri" title="Bank Mandiri">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Bank_BNI_logo.svg/2560px-Bank_BNI_logo.svg.png" alt="BNI" title="Bank BNI">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Bank_BRI_logo.svg/2560px-Bank_BRI_logo.svg.png" alt="BRI" title="Bank BRI">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Logo_dana.svg/2560px-Logo_dana.svg.png" alt="DANA" title="DANA">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_ovo.svg/2560px-Logo_ovo.svg.png" alt="OVO" title="OVO">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Logo_Gopay_2022.svg/2560px-Logo_Gopay_2022.svg.png" alt="GoPay" title="GoPay">
-                        </div>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Ikuti Kami</h4>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-tiktok"></i></a>
-                            <a href="#"><i class="fab fa-facebook"></i></a>
-                        </div>
+                <div class="footer-column">
+                    <h4>Layanan</h4>
+                    <ul>
+                        <li><a href="#pricing"><i class="fas fa-user-plus"></i>TikTok Followers</a></li>
+                        <li><a href="#pricing"><i class="fas fa-heart"></i>TikTok Likes</a></li>
+                        <li><a href="#pricing"><i class="fas fa-eye"></i>TikTok Views</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Perusahaan</h4>
+                    <ul>
+                        <li><a href="https://wa.me/628123456789"><i class="fas fa-headset"></i>Hubungi Kami</a></li>
+                        <li><a href="#faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
+                        <li><a href="#"><i class="fas fa-file-contract"></i>Syarat & Ketentuan</a></li>
+                        <li><a href="#"><i class="fas fa-user-shield"></i>Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Metode Pembayaran</h4>
+                    <div class="payment-methods">
+                        <img src="https://seeklogo.com/wp-content/uploads/2020/09/BCA_logo-2020.svg" alt="Bank BCA" title="Bank BCA">
+                        <img src="https://seeklogo.com/wp-content/uploads/2020/09/Mandiri_logo-2020.svg" alt="Bank Mandiri" title="Bank Mandiri">
+                        <img src="https://seeklogo.com/wp-content/uploads/2020/09/BNI_logo-2020.svg" alt="Bank BNI" title="Bank BNI">
+                        <img src="https://seeklogo.com/wp-content/uploads/2020/09/BRI_logo-2020.svg" alt="Bank BRI" title="Bank BRI">
+                        <img src="https://seeklogo.com/wp-content/uploads/2021/02/DANA_2021.svg" alt="DANA" title="DANA">
+                        <img src="https://seeklogo.com/wp-content/uploads/2021/02/GOPAY_2021.svg" alt="GoPay" title="GoPay">
+                        <img src="https://seeklogo.com/wp-content/uploads/2021/02/OVO_2021.svg" alt="OVO" title="OVO">
                     </div>
                 </div>
-                <div class="footer-bottom">
-                    <div class="footer-bottom-left">
-                        <p>&copy; 2024 TikTokPro. All Rights Reserved.</p>
-                    </div>
-                    <div class="footer-bottom-right">
-                        <a href="#">Peta Situs</a> | <a href="#">Kebijakan Privasi</a>
+                <div class="footer-column">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
                     </div>
                 </div>
             </div>
-        </footer>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TikTokPro. All Rights Reserved.</p>
+                <div class="rating-badge">
+                    <img src="https://www.gstatic.com/images/icons/material-stars/4.5/stars.png" alt="Rating">
+                </div>
+            </div>
+        </div>
+    </footer>
 
-        <!-- MODIFIKASI FOOTER: Tombol Kembali ke Atas -->
-        <button class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></button>
-
-    </main>
+    <!-- MODIFIKASI FOOTER: Tombol Kembali ke Atas -->
+    <button class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></button>
 
     <!-- ========== JAVASCRIPT ========== -->
     <script>
@@ -1854,38 +1889,6 @@
                 });
             });
 
-            // --- Countdown Timer Logic ---
-            const countdownTimer = document.getElementById('countdown-timer');
-            const targetDate = new Date().getTime() + (2 * 60 * 60 * 1000); // 2 hari dari sekarang
-            const updateCountdown = () => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (distance < 0) {
-                    countdownTimer.innerText = "Penawaran telah berakhir!";
-                } else {
-                    const days = Math.floor(distance / (1000 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 24)) / (1000 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 24)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000;
-
-                    countdownTimer.innerText = `${days} Hari ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-            };
-
-            setInterval(updateCountdown, 1000);
-            
-            // --- Newsletter Form Logic ---
-            const newsletterForm = document.getElementById('newsletter-form');
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = e.target.querySelector('input[type="email"]').value;
-                if (email) {
-                    alert(`Terima kasih! Kami akan mengirimkan penawaran ke ${email}.`);
-                    e.target.reset();
-                }
-            });
-
             // --- MODIFIKASI FOOTER: Back to Top Button Logic ---
             const backToTopButton = document.getElementById('backToTop');
 
@@ -1903,6 +1906,20 @@
                     behavior: 'smooth'
                 });
             });
+
+            // --- PENINGKATAN FINAL CTA: Animasi Scroll ---
+            const finalCtaSection = document.getElementById('final-cta');
+            const finalCtaContent = finalCtaSection.querySelector('.cta-content');
+            
+            const finalCtaObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        finalCtaContent.classList.add('show');
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            finalCtaObserver.observe(finalCtaSection);
 
         });
     </script>
