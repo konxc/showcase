@@ -8,7 +8,7 @@
     <!-- Google Fonts: Inter, Lora, Fira Code -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Lora:wght@400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
         /* ===================================
@@ -70,20 +70,81 @@
             display: block;
         }
 
-        body::before {
-            content: "";
+        /* --- FITUR ARTISTIK BARU: Canvas Background --- */
+        #generative-bg {
             position: fixed;
-            top: -10%;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 110%;
-            opacity: 0.04;
-            z-index: -1;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
-            will-change: transform;
-            pointer-events: none;
+            height: 100%;
+            z-index: -3; /* Paling belakang */
+            opacity: 0.1;
+        }
+        
+        /* --- FITUR ARTISTIK BARU: Hero Section --- */
+        .hero {
+            padding: 10rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: var(--white); /* Teks di hero selalu putih */
         }
 
+        .hero-bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: -2;
+            opacity: 0.4;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: kinetic-text-reveal 1.5s 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes kinetic-text-reveal {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: none;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: kinetic-text-reveal 1.5s 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -236,28 +297,13 @@
            KOMPONEN UTAMA
            =================================== */
 
-        /* Hero Section */
-        .hero {
-            padding: 7.5rem 0;
-            text-align: center;
-            background: radial-gradient(ellipse at top right, rgba(125, 143, 158, 0.15) 0%, rgba(252, 251, 248, 0) 60%);
-        }
-
-        .hero h1 {
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            margin: 0 auto;
-        }
-
-        /* Showcase Grid - PERBAIKAN: Grid Fleksibel */
+        /* --- FITUR ARTISTIK BARU: Broken Grid Layout --- */
         .showcase-grid {
             padding: 6.25rem 0;
             display: grid;
-            /* PERBAIKAN: Grid yang menyesuaikan jumlah kolom */
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(4, 1fr); /* Grid dasar 4 kolom */
+            grid-auto-rows: 1fr;
+            gap: 2rem;
             position: relative;
         }
 
@@ -275,7 +321,6 @@
             z-index: -1;
         }
 
-        /* --- Showcase Card - PERBAIKAN: Hapus Overlap --- */
         .showcase-card {
             background-color: var(--bg-secondary);
             border-radius: var(--border-radius);
@@ -286,6 +331,15 @@
             flex-direction: column;
             align-items: flex-start;
         }
+        
+        /* Penempatan Kartu di Grid */
+        .showcase-card:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 2; }
+        .showcase-card:nth-child(2) { grid-column: 3 / 5; grid-row: 1 / 3; }
+        .showcase-card:nth-child(3) { grid-column: 1 / 2; grid-row: 2 / 3; }
+        .showcase-card:nth-child(4) { grid-column: 2 / 4; grid-row: 3 / 4; }
+        .showcase-card:nth-child(5) { grid-column: 4 / 5; grid-row: 3 / 4; }
+        .showcase-card:nth-child(6) { grid-column: 1 / 3; grid-row: 4 / 5; }
+        .showcase-card:nth-child(7) { grid-column: 3 / 5; grid-row: 4 / 5; }
         
         .showcase-card:hover {
             transform: translateY(-0.625rem);
@@ -563,11 +617,33 @@
             .container { max-width: 960px; }
         }
 
+        @media (max-width: 992px) {
+            /* Kembalikan grid ke normal di tablet */
+            .showcase-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .showcase-card:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
+            .showcase-card:nth-child(2) { grid-column: 2 / 3; grid-row: 1 / 2; }
+            .showcase-card:nth-child(3) { grid-column: 1 / 2; grid-row: 2 / 3; }
+            .showcase-card:nth-child(4) { grid-column: 2 / 3; grid-row: 2 / 3; }
+            .showcase-card:nth-child(5) { grid-column: 1 / 2; grid-row: 3 / 4; }
+            .showcase-card:nth-child(6) { grid-column: 2 / 3; grid-row: 3 / 4; }
+            .showcase-card:nth-child(7) { grid-column: 1 / 3; grid-row: 4 / 5; }
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             h2 { font-size: 2rem; }
             .hero { padding: 5rem 0; }
-            .showcase-grid { padding: 3.75rem 0; }
+            .showcase-grid { 
+                padding: 3.75rem 0; 
+                grid-template-columns: 1fr; /* Satu kolom di mobile */
+            }
+            /* Reset grid position di mobile */
+            .showcase-card:nth-child(n) {
+                grid-column: auto;
+                grid-row: auto;
+            }
             .philosophy { padding: 3.75rem 0; }
             .testimonials { padding: 3.75rem 0; }
             .case-study { padding: 3.75rem 0; }
@@ -584,6 +660,9 @@
 </head>
 <body>
 
+    <!-- FITUR ARTISTIK BARU: Canvas Background -->
+    <canvas id="generative-bg"></canvas>
+
     <!-- Theme Toggle -->
     <div class="theme-toggle-wrapper">
         <div class="theme-toggle" role="button" tabindex="0" aria-label="Toggle dark mode"></div>
@@ -595,8 +674,13 @@
 
     <a href="#main-content" class="skip-link">Langsung ke konten utama</a>
 
+    <!-- FITUR ARTISTIK BARU: Hero Section dengan Video -->
     <header class="hero">
-        <div class="container">
+        <!-- GANTI dengan video Anda sendiri yang lebih abstrak dan relevan -->
+        <video class="hero-bg-video" autoplay muted loop>
+            <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content container">
             <h1 class="animate-on-scroll">Membangun Jembatan Digital</h1>
             <p class="animate-on-scroll delay-1">Gotong Royong untuk menciptakan solusi teknologi yang berdampak, satu kode pada satu waktu.</p>
         </div>
@@ -605,6 +689,7 @@
     <main id="main-content">
         <h2 class="visually-hidden">Produk Unggulan Kami</h2>
         
+        <!-- FITUR ARTISTIK BARU: Broken Grid Layout -->
         <section class="showcase-grid container" aria-labelledby="showcase-heading">
             <!-- Produk 1: Akses Online -->
             <article class="showcase-card animate-on-scroll delay-1">
@@ -667,7 +752,7 @@
                 <a href="#" class="btn">Lihat Kisahnya</a>
             </article>
 
-            <!-- PROYEK BARU: Sistem Akademik -->
+            <!-- Produk 4: Sistem Akademik -->
             <article class="showcase-card animate-on-scroll delay-4">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M22 10v6M2 10l10-5 10 5-10 5z" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -684,7 +769,7 @@
                 <a href="https://github.com/konxc/sistem-akademik" target="_blank" class="btn">Lihat Kodenya</a>
             </article>
 
-            <!-- PROYEK BARU: Sistem Administrasi Sekolah -->
+            <!-- Produk 5: Sistem Administrasi Sekolah -->
             <article class="showcase-card animate-on-scroll delay-5">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -701,7 +786,7 @@
                 <a href="https://github.com/budhihartati12-sketch/v0-website-for-school" target="_blank" class="btn">Jelajahi Proyek</a>
             </article>
 
-            <!-- PROYEK BARU: Digital Workspace Ecosystem -->
+            <!-- Produk 6: Digital Workspace Ecosystem -->
             <article class="showcase-card animate-on-scroll delay-6">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -719,7 +804,7 @@
                 <a href="https://github.com/konxc/digital-workspace-ecosystem" target="_blank" class="btn">Lihat Kodenya</a>
             </article>
 
-            <!-- PROYEK BARU: We Will Shine -->
+            <!-- Produk 7: We Will Shine -->
             <article class="showcase-card animate-on-scroll delay-7">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -734,7 +819,6 @@
                 </ul>
                 <a href="https://github.com/itif-Syuhada/we-will-shine" target="_blank" class="btn">Jelajahi Proyek</a>
             </article>
-
         </section>
 
         <section class="philosophy animate-on-scroll">
@@ -808,6 +892,95 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- FITUR ARTISTIK BARU: Generative Background Logic ---
+            const canvas = document.getElementById('generative-bg');
+            const ctx = canvas.getContext('2d');
+            let nodes = [];
+            let mouse = { x: null, y: null };
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Node {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.radius = Math.random() * 2 + 1;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+                    if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(113, 139, 122, 0.5)'; // --accent-primary
+                    ctx.fill();
+                }
+            }
+
+            function initNodes() {
+                nodes = [];
+                const numberOfNodes = Math.floor((canvas.width * canvas.height) / 15000);
+                for (let i = 0; i < numberOfNodes; i++) {
+                    nodes.push(new Node());
+                }
+            }
+            initNodes();
+
+            function connectNodes() {
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = `rgba(113, 139, 122, ${0.2 * (1 - distance / 120)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animateGenerativeBg() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                nodes.forEach(node => {
+                    node.update();
+                    node.draw();
+                });
+                
+                connectNodes();
+                requestAnimationFrame(animateGenerativeBg);
+            }
+            animateGenerativeBg();
+
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            window.addEventListener('mouseout', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
             // --- Dark Mode Logic ---
             const html = document.documentElement;
             const themeToggle = document.querySelector('.theme-toggle');
