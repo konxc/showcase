@@ -62,32 +62,108 @@
             overflow-x: hidden;
             font-size: 100%;
             transition: background-color 0.3s ease, color 0.3s ease;
+            /* FITUR BARU: Nonaktifkan selection default untuk kustomisasi */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Ijinkan selection pada teks penting */
+        p, h1, h2, h3, li, cite {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         img {
             max-width: 100%;
             height: auto;
             display: block;
+            -webkit-user-drag: none;
+            user-select: none;
         }
 
-        /* --- FITUR ARTISTIK BARU: Canvas Background --- */
+        /* --- FITUR BARU: Custom Cursor --- */
+        body {
+            cursor: none;
+        }
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.1s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .custom-cursor.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(113, 139, 122, 0.1);
+        }
+        .custom-cursor.click {
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+        
+        /* --- FITUR BARU: Sticky Progress Bar --- */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.2s ease;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--accent-primary);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+        
+        /* --- FITUR BARU: Particle Effect --- */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            animation: particle-fade-out 1s ease-out forwards;
+        }
+        @keyframes particle-fade-out {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) scale(0);
+            }
+        }
+
+
         #generative-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -3; /* Paling belakang */
+            z-index: -3;
             opacity: 0.1;
         }
         
-        /* --- FITUR ARTISTIK BARU: Hero Section --- */
         .hero {
             padding: 10rem 0;
             text-align: center;
             position: relative;
             overflow: hidden;
-            color: var(--white); /* Teks di hero selalu putih */
+            color: var(--white);
         }
 
         .hero-bg-video {
@@ -151,12 +227,11 @@
             padding: 0 1.25rem;
         }
         
-        /* Theme Toggle */
         .theme-toggle-wrapper {
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1000;
+            z-index: 1001; /* Di atas progress bar */
         }
         .theme-toggle {
             width: 60px;
@@ -276,13 +351,31 @@
            =================================== */
         .animate-on-scroll {
             opacity: 0;
-            transform: translateY(2rem);
-            transition: opacity 0.6s var(--transition-ease), transform 0.6s var(--transition-ease);
+            transition: opacity 0.6s var(--transition-ease), transform 0.8s var(--transition-ease);
         }
 
         .animate-on-scroll.is-visible {
             opacity: 1;
-            transform: translateY(0);
+        }
+        
+        /* --- FITUR BARU: Dynamic Entry Animations --- */
+        .animate-on-scroll.from-left {
+            transform: translateX(-100px) rotate(-5deg);
+        }
+        .animate-on-scroll.from-right {
+            transform: translateX(100px) rotate(5deg);
+        }
+        .animate-on-scroll.from-top {
+            transform: translateY(-100px) scale(0.8);
+        }
+        .animate-on-scroll.from-bottom {
+            transform: translateY(100px) scale(0.8);
+        }
+        .animate-on-scroll.is-visible.from-left,
+        .animate-on-scroll.is-visible.from-right,
+        .animate-on-scroll.is-visible.from-top,
+        .animate-on-scroll.is-visible.from-bottom {
+            transform: translateX(0) translateY(0) rotate(0) scale(1);
         }
         
         .delay-1 { transition-delay: 0.1s; }
@@ -296,12 +389,10 @@
         /* ===================================
            KOMPONEN UTAMA
            =================================== */
-
-        /* --- FITUR ARTISTIK BARU: Broken Grid Layout --- */
         .showcase-grid {
             padding: 6.25rem 0;
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Grid dasar 4 kolom */
+            grid-template-columns: repeat(4, 1fr);
             grid-auto-rows: 1fr;
             gap: 2rem;
             position: relative;
@@ -321,29 +412,26 @@
             z-index: -1;
         }
 
+        /* --- FITUR BARU: Magnetic Card --- */
         .showcase-card {
             background-color: var(--bg-secondary);
             border-radius: var(--border-radius);
             padding: 2.5rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            transition: transform var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            position: relative; /* Diperlukan untuk efek magnetik */
         }
         
-        /* Penempatan Kartu di Grid */
-        .showcase-card:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 2; }
-        .showcase-card:nth-child(2) { grid-column: 3 / 5; grid-row: 1 / 3; }
-        .showcase-card:nth-child(3) { grid-column: 1 / 2; grid-row: 2 / 3; }
-        .showcase-card:nth-child(4) { grid-column: 2 / 4; grid-row: 3 / 4; }
-        .showcase-card:nth-child(5) { grid-column: 4 / 5; grid-row: 3 / 4; }
-        .showcase-card:nth-child(6) { grid-column: 1 / 3; grid-row: 4 / 5; }
-        .showcase-card:nth-child(7) { grid-column: 3 / 5; grid-row: 4 / 5; }
+        .showcase-card.magnetic {
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
         
         .showcase-card:hover {
-            transform: translateY(-0.625rem);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         .card-icon {
@@ -389,7 +477,6 @@
             margin-top: 1.25rem;
         }
 
-        /* --- Terminal Demo --- */
         .terminal-demo {
             width: 100%;
             background-color: #282c34;
@@ -442,6 +529,7 @@
             50% { opacity: 0; }
         }
 
+        /* --- FITUR BARU: Magnetic Button --- */
         .btn {
             display: inline-block;
             margin-top: 1.25rem;
@@ -453,13 +541,31 @@
             text-decoration: none;
             border-radius: 0.5rem;
             transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-            cursor: pointer;
-            min-height: 48px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
+            cursor: none; /* Nonaktifkan default cursor */
+            position: relative;
+            overflow: hidden;
         }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
         .btn:disabled {
             background-color: var(--text-muted);
             cursor: not-allowed;
@@ -473,9 +579,7 @@
         }
         
         .btn:focus {
-            outline: 2px solid var(--accent-secondary);
-            outline-offset: 2px;
-            background-color: #5d7365;
+            outline: none; /* Hapus outline default */
         }
 
         .philosophy {
@@ -618,17 +722,7 @@
         }
 
         @media (max-width: 992px) {
-            /* Kembalikan grid ke normal di tablet */
-            .showcase-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .showcase-card:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
-            .showcase-card:nth-child(2) { grid-column: 2 / 3; grid-row: 1 / 2; }
-            .showcase-card:nth-child(3) { grid-column: 1 / 2; grid-row: 2 / 3; }
-            .showcase-card:nth-child(4) { grid-column: 2 / 3; grid-row: 2 / 3; }
-            .showcase-card:nth-child(5) { grid-column: 1 / 2; grid-row: 3 / 4; }
-            .showcase-card:nth-child(6) { grid-column: 2 / 3; grid-row: 3 / 4; }
-            .showcase-card:nth-child(7) { grid-column: 1 / 3; grid-row: 4 / 5; }
+            .showcase-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
@@ -637,12 +731,7 @@
             .hero { padding: 5rem 0; }
             .showcase-grid { 
                 padding: 3.75rem 0; 
-                grid-template-columns: 1fr; /* Satu kolom di mobile */
-            }
-            /* Reset grid position di mobile */
-            .showcase-card:nth-child(n) {
-                grid-column: auto;
-                grid-row: auto;
+                grid-template-columns: 1fr;
             }
             .philosophy { padding: 3.75rem 0; }
             .testimonials { padding: 3.75rem 0; }
@@ -655,12 +744,19 @@
             .showcase-card { padding: 2rem; }
             .theme-toggle-wrapper { top: 10px; right: 10px; }
             .terminal-body { font-size: 0.8rem; }
+            .custom-cursor { display: none; } /* Sembunyikan di mobile */
         }
     </style>
 </head>
 <body>
 
-    <!-- FITUR ARTISTIK BARU: Canvas Background -->
+    <!-- FITUR BARU: Custom Cursor & Progress Bar -->
+    <div class="custom-cursor"></div>
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- Canvas Background -->
     <canvas id="generative-bg"></canvas>
 
     <!-- Theme Toggle -->
@@ -674,32 +770,30 @@
 
     <a href="#main-content" class="skip-link">Langsung ke konten utama</a>
 
-    <!-- FITUR ARTISTIK BARU: Hero Section dengan Video -->
+    <!-- Hero Section -->
     <header class="hero">
-        <!-- GANTI dengan video Anda sendiri yang lebih abstrak dan relevan -->
         <video class="hero-bg-video" autoplay muted loop>
             <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
         </video>
         <div class="hero-content container">
-            <h1 class="animate-on-scroll">Membangun Jembatan Digital</h1>
-            <p class="animate-on-scroll delay-1">Gotong Royong untuk menciptakan solusi teknologi yang berdampak, satu kode pada satu waktu.</p>
+            <h1>Membangun Jembatan Digital</h1>
+            <p>Gotong Royong untuk menciptakan solusi teknologi yang berdampak, satu kode pada satu waktu.</p>
         </div>
     </header>
 
     <main id="main-content">
         <h2 class="visually-hidden">Produk Unggulan Kami</h2>
         
-        <!-- FITUR ARTISTIK BARU: Broken Grid Layout -->
         <section class="showcase-grid container" aria-labelledby="showcase-heading">
             <!-- Produk 1: Akses Online -->
-            <article class="showcase-card animate-on-scroll delay-1">
+            <article class="showcase-card animate-on-scroll from-left delay-1">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M2 17L12 22L22 17" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M2 12L12 17L22 12" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <h2>Akses Online</h2>
-                <p>Terlalu sering kesulitan membagikan progress kerja Anda? Akses Online adalah jembatan digital andal yang membawa aplikasi lokal Anda ke dunia, hanya dalam hitungan detik.</p>
+                <p>Terlalu sering kesulitan membagikan progress kerja Anda? Akses Online adalah jembatan digital andal yang membawa aplikasi lokal Anda ke dunia.</p>
                 <ul>
                     <li>Subdomain unik & aman</li>
                     <li>Konfigurasi otomatis</li>
@@ -714,110 +808,110 @@
                     </div>
                     <div class="terminal-body" id="terminal-body"></div>
                 </div>
-                <button class="btn" id="run-demo-btn">Jalankan Demo</button>
+                <button class="btn" id="run-demo-btn"><span>Jalankan Demo</span></button>
             </article>
 
             <!-- Produk 2: TrackMe -->
-            <article class="showcase-card animate-on-scroll delay-2">
-                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <article class="showcase-card animate-on-scroll from-top delay-2">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://.w3.org/2000/svg" aria-hidden="true">
                     <path d="M18 20V10" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M12 20V4" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M6 20V14" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <h2>TrackMe Ecosystem</h2>
-                <p>Merasa sibuk belum tentu berarti berkembang. TrackMe adalah pendamping pribadi Anda untuk melacak pertumbuhan yang berarti, dengan evaluasi mingguan yang membantu Anda fokus pada esensi.</p>
+                <p>Merasa sibuk belum tentu berarti berkembang. TrackMe adalah pendamping pribadi Anda untuk melacak pertumbuhan yang berarti.</p>
                 <ul>
                     <li>Wisenesday™ Streak</li>
                     <li>Logging Sesi Kerja</li>
                     <li>Analisis Jam Terbang</li>
                     <li>Dashboard Personal</li>
                 </ul>
-                <a href="#" class="btn">Mulai Perjalanan</a>
+                <a href="#" class="btn"><span>Mulai Perjalanan</span></a>
             </article>
 
             <!-- Produk 3: KonXC Website -->
-            <article class="showcase-card animate-on-scroll delay-3">
+            <article class="showcase-card animate-on-scroll from-right delay-3">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M16 18L22 12L16 6" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M8 6L2 12L8 18" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <h2>KonXC Website</h2>
-                <p>Website bukan hanya tampilan, ia adalah cerminan nilai. Kami membangun wajah digital yang tidak hanya cepat dan indah, tetapi juga menceritakan sebuah kisah tentang keahlian dan komitmen.</p>
+                <p>Website bukan hanya tampilan, ia adalah cerminan nilai. Kami membangun wajah digital yang tidak hanya cepat dan indah.</p>
                 <ul>
                     <li>Static Site Generator</li>
                     <li>Desain Responsif</li>
                     <li>Performa Super Cepat</li>
                     <li>Kode Bersih</li>
                 </ul>
-                <a href="#" class="btn">Lihat Kisahnya</a>
+                <a href="#" class="btn"><span>Lihat Kisahnya</span></a>
             </article>
 
             <!-- Produk 4: Sistem Akademik -->
-            <article class="showcase-card animate-on-scroll delay-4">
+            <article class="showcase-card animate-on-scroll from-bottom delay-4">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M22 10v6M2 10l10-5 10 5-10 5z" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M6 12v5a3 3 0 003 3h6a3 3 0 003-3v-5" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <h2>Sistem Akademik</h2>
-                <p>Platform modern untuk mengelola seluruh siklus akademik, dari pendaftaran hingga kelulusan. Dirancang untuk memberdayakan institusi pendidikan dengan data yang terstruktur dan proses yang efisien.</p>
+                <p>Platform modern untuk mengelola seluruh siklus akademik, dari pendaftaran hingga kelulusan.</p>
                 <ul>
                     <li>Manajemen Siswa & Guru</li>
                     <li>Penjadwalan Otomatis</li>
                     <li>Portal Orang Tua</li>
                     <li>Laporan & Analitik</li>
                 </ul>
-                <a href="https://github.com/konxc/sistem-akademik" target="_blank" class="btn">Lihat Kodenya</a>
+                <a href="https://github.com/konxc/sistem-akademik" target="_blank" class="btn"><span>Lihat Kodenya</span></a>
             </article>
 
             <!-- Produk 5: Sistem Administrasi Sekolah -->
-            <article class="showcase-card animate-on-scroll delay-5">
+            <article class="showcase-card animate-on-scroll from-left delay-5">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <polyline points="9,22 9,12 15,12 15,22" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <h2>Sistem Administrasi Sekolah</h2>
-                <p>Solusi terpadu untuk menyederhanakan tata kelola sekolah sehari-hari. Dari kehadiran siswa hingga pengelolaan keuangan, semuanya dalam satu platform yang mudah diakses dan aman.</p>
+                <p>Solusi terpadu untuk menyederhanakan tata kelola sekolah sehari-hari.</p>
                 <ul>
                     <li>Absensi Digital</li>
                     <li>Manajemen Keuangan</li>
                     <li>Perpustakaan Digital</li>
                     <li>Komunikasi Terpadu</li>
                 </ul>
-                <a href="https://github.com/budhihartati12-sketch/v0-website-for-school" target="_blank" class="btn">Jelajahi Proyek</a>
+                <a href="https://github.com/budhihartati12-sketch/v0-website-for-school" target="_blank" class="btn"><span>Jelajahi Proyek</span></a>
             </article>
 
             <!-- Produk 6: Digital Workspace Ecosystem -->
-            <article class="showcase-card animate-on-scroll delay-6">
+            <article class="showcase-card animate-on-scroll from-right delay-6">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="9" cy="7" r="4" stroke="#4A4A4A" stroke-width="2"/>
                     <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <h2>Digital Workspace Ecosystem</h2>
-                <p>Ruang kerja digital yang dirancang untuk kolaborasi tanpa batas. Menggabungkan alat komunikasi, manajemen proyek, dan berbagi dokumen dalam satu ekosistem yang selaras.</p>
+                <p>Ruang kerja digital yang dirancang untuk kolaborasi tanpa batas.</p>
                 <ul>
                     <li>Kolaborasi Real-time</li>
                     <li>Manajemen Tugas</li>
                     <li>Integrasi Aplikasi</li>
                     <li>Keamanan Enterprise</li>
                 </ul>
-                <a href="https://github.com/konxc/digital-workspace-ecosystem" target="_blank" class="btn">Lihat Kodenya</a>
+                <a href="https://github.com/konxc/digital-workspace-ecosystem" target="_blank" class="btn"><span>Lihat Kodenya</span></a>
             </article>
 
             <!-- Produk 7: We Will Shine -->
-            <article class="showcase-card animate-on-scroll delay-7">
+            <article class="showcase-card animate-on-scroll from-top delay-7">
                 <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <h2>We Will Shine</h2>
-                <p>Platform untuk mengakselerasi pertumbuhan personal dan profesional. Melalui kurasi konten, komunitas yang suportif, dan pelacakan perkembangan, kami membantu setiap individu untuk bersinar.</p>
+                <p>Platform untuk mengakselerasi pertumbuhan personal dan profesional.</p>
                 <ul>
                     <li>Kurasi Pembelajaran</li>
                     <li>Komunitas Mentor</li>
                     <li>Track Progress</li>
                     <li>Sertifikasi Digital</li>
                 </ul>
-                <a href="https://github.com/itif-Syuhada/we-will-shine" target="_blank" class="btn">Jelajahi Proyek</a>
+                <a href="https://github.com/itif-Syuhada/we-will-shine" target="_blank" class="btn"><span>Jelajahi Proyek</span></a>
             </article>
         </section>
 
@@ -866,7 +960,7 @@
         <section class="case-study animate-on-scroll">
             <div class="container">
                 <h2 class="animate-on-scroll">Studi Kasus: Membangun Portal UMKM</h2>
-                <p class="animate-on-scroll delay-1">Lihat bagaimana kami membantu sebuah UMKM kerajinan lokal memperluas jangkauan pasar mereka dari 0 ke 1000+ pelanggan dalam 3 bulan melalui platform digital yang kami bangun.</p>
+                <p class="animate-on-scroll delay-1">Lihat bagaimana kami membantu sebuah UMKM kerajinan lokal memperluas jangkauan pasar mereka dari 0 ke 1000+ pelanggan dalam 3 bulan.</p>
                 <a href="#" class="case-study-link animate-on-scroll delay-2">
                     Baca Studi Kasus Lengkap
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -885,103 +979,84 @@
                 <input type="text" name="name" placeholder="Nama Lengkap Anda" required>
                 <input type="email" name="email" placeholder="Email Aktif" required>
                 <textarea name="message" rows="5" placeholder="Ceritakan tentang ide Anda..." required></textarea>
-                <button type="submit" class="btn">Mulai Percakapan</button>
+                <button type="submit" class="btn" id="cta-form-btn"><span>Mulai Percakapan</span></button>
             </form>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- FITUR ARTISTIK BARU: Generative Background Logic ---
-            const canvas = document.getElementById('generative-bg');
-            const ctx = canvas.getContext('2d');
-            let nodes = [];
-            let mouse = { x: null, y: null };
+            
+            // --- FITUR BARU: Custom Cursor Logic ---
+            const cursor = document.querySelector('.custom-cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
 
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+            const interactiveElements = document.querySelectorAll('a, button, .showcase-card');
+            interactiveElements.forEach(elem => {
+                elem.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                elem.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+            document.addEventListener('mousedown', () => cursor.classList.add('click'));
+            document.addEventListener('mouseup', () => cursor.classList.remove('click'));
 
-            class Node {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.vy = (Math.random() - 0.5) * 0.5;
-                    this.radius = Math.random() * 2 + 1;
-                }
+            // --- FITUR BARU: Progress Bar Logic ---
+            const progressBar = document.querySelector('.progress-bar');
+            const progressContainer = document.querySelector('.progress-container');
+            const updateProgressBar = () => {
+                const scrollTop = window.pageYOffset;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                progressBar.style.width = scrollPercent + '%';
+                progressContainer.style.transform = `scaleX(${scrollPercent / 100})`;
+            };
+            window.addEventListener('scroll', updateProgressBar);
+            updateProgressBar();
 
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-
-                    if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
-                    if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
-                }
-
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(113, 139, 122, 0.5)'; // --accent-primary
-                    ctx.fill();
-                }
-            }
-
-            function initNodes() {
-                nodes = [];
-                const numberOfNodes = Math.floor((canvas.width * canvas.height) / 15000);
-                for (let i = 0; i < numberOfNodes; i++) {
-                    nodes.push(new Node());
-                }
-            }
-            initNodes();
-
-            function connectNodes() {
-                for (let i = 0; i < nodes.length; i++) {
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        const dx = nodes[i].x - nodes[j].x;
-                        const dy = nodes[i].y - nodes[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < 120) {
-                            ctx.beginPath();
-                            ctx.moveTo(nodes[i].x, nodes[i].y);
-                            ctx.lineTo(nodes[j].x, nodes[j].y);
-                            ctx.strokeStyle = `rgba(113, 139, 122, ${0.2 * (1 - distance / 120)})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            function animateGenerativeBg() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                nodes.forEach(node => {
-                    node.update();
-                    node.draw();
+            // --- FITUR BARU: Magnetic Effect Logic ---
+            const cards = document.querySelectorAll('.showcase-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    card.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.02)`;
+                    card.classList.add('magnetic');
                 });
-                
-                connectNodes();
-                requestAnimationFrame(animateGenerativeBg);
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                    card.classList.remove('magnetic');
+                });
+            });
+
+            // --- FITUR BARU: Particle Effect Logic ---
+            const createParticles = (e, count = 20) => {
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const size = Math.random() * 8 + 4;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.background = `hsl(${Math.random() * 60 + 160}, 70%, 60%)`;
+                    particle.style.left = `${e.clientX}px`;
+                    particle.style.top = `${e.clientY}px`;
+                    particle.style.setProperty('--x', `${(Math.random() - 0.5) * 100}px`);
+                    particle.style.setProperty('--y', `${(Math.random() - 0.5) * 100}px`);
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 1000);
+                }
+            };
+            
+            const ctaBtn = document.getElementById('cta-form-btn');
+            if(ctaBtn) {
+                ctaBtn.addEventListener('click', (e) => {
+                    createParticles(e, 30);
+                });
             }
-            animateGenerativeBg();
 
-            window.addEventListener('mousemove', (e) => {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-            });
-
-            window.addEventListener('mouseout', () => {
-                mouse.x = null;
-                mouse.y = null;
-            });
-
-            // --- Dark Mode Logic ---
+            // --- Existing Logic (Dark Mode, Loader, etc.) ---
             const html = document.documentElement;
             const themeToggle = document.querySelector('.theme-toggle');
             const currentTheme = localStorage.getItem('theme') || 'light';
@@ -1005,13 +1080,11 @@
                 }
             });
 
-            // --- Loading Screen ---
             window.addEventListener('load', function() {
                 const loaderWrapper = document.querySelector('.loader-wrapper');
                 loaderWrapper.classList.add('hidden');
             });
 
-            // --- Intersection Observer for Animations ---
             const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
             const options = { root: null, rootMargin: '0px', threshold: 0.1 };
             const observer = new IntersectionObserver((entries, observer) => {
@@ -1024,7 +1097,7 @@
             }, options);
             elementsToAnimate.forEach(element => observer.observe(element));
 
-            // --- Interactive Terminal Demo Logic ---
+            // --- Terminal Demo Logic ---
             const runDemoBtn = document.getElementById('run-demo-btn');
             const terminalBody = document.getElementById('terminal-body');
             
@@ -1046,7 +1119,7 @@
 
             function runDemo() {
                 runDemoBtn.disabled = true;
-                runDemoBtn.textContent = 'Menjalankan...';
+                runDemoBtn.innerHTML = '<span>Menjalankan...</span>';
                 terminalBody.innerHTML = '';
 
                 let stepIndex = 0;
@@ -1058,14 +1131,16 @@
                         });
                         stepIndex++;
                     } else {
-                        runDemoBtn.textContent = 'Jalankan Lagi';
+                        runDemoBtn.innerHTML = '<span>Jalankan Lagi</span>';
                         runDemoBtn.disabled = false;
                     }
                 }
                 nextStep();
             }
 
-            runDemoBtn.addEventListener('click', runDemo);
+            if(runDemoBtn) {
+                runDemoBtn.addEventListener('click', runDemo);
+            }
         });
     </script>
 </body>
