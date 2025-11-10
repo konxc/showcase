@@ -1,1 +1,899 @@
-coba
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showcase - KonXC</title>
+    
+    <!-- Google Fonts: Inter, Lora, Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===================================
+           KONFIGURASI VARIABEL CSS
+           =================================== */
+        :root {
+            /* --- Warna Tema Terang --- */
+            --bg-primary: #FCFBF8;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #4A4A4A;
+            --text-secondary: #6C757D;
+            --text-muted: #9A9A9A;
+            --accent-primary: #718B7A;
+            --accent-secondary: #7D8F9E;
+            --border-color: #E9ECEF;
+
+            /* --- Font & Transisi --- */
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Lora', serif;
+            --font-mono: 'Fira Code', monospace;
+            --transition-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-speed: 0.4s;
+            --border-radius: 12px;
+        }
+
+        /* --- Variabel untuk Tema Gelap --- */
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2C2C2C;
+            --text-primary: #E0E0E0;
+            --text-secondary: #B0B0B0;
+            --text-muted: #888888;
+            --accent-primary: #8FA89A;
+            --accent-secondary: #9AAAB8;
+            --border-color: #444444;
+        }
+
+        /* ===================================
+           RESET & GLOBAL STYLES
+           =================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 100%;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 110%;
+            opacity: 0.04;
+            z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .theme-toggle {
+            width: 60px;
+            height: 30px;
+            background-color: var(--text-muted);
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .theme-toggle::after {
+            content: '🌙';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--bg-secondary);
+            border-radius: 50%;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        [data-theme="dark"] .theme-toggle {
+            background-color: var(--accent-primary);
+        }
+        [data-theme="dark"] .theme-toggle::after {
+            content: '☀️';
+            transform: translateX(30px);
+        }
+
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .loader-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 0.5rem;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            z-index: 100;
+        }
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* ===================================
+           TIPOGRAFI
+           =================================== */
+        h1, h2, h3 {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.5rem; }
+        h3 { font-size: 1.5rem; }
+
+        p {
+            font-family: var(--font-serif);
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 65ch;
+        }
+        
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        /* ===================================
+           ANIMASI
+           =================================== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: opacity 0.6s var(--transition-ease), transform 0.6s var(--transition-ease);
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+        .delay-7 { transition-delay: 0.7s; }
+
+        /* ===================================
+           KOMPONEN UTAMA
+           =================================== */
+
+        /* Hero Section */
+        .hero {
+            padding: 7.5rem 0;
+            text-align: center;
+            background: radial-gradient(ellipse at top right, rgba(125, 143, 158, 0.15) 0%, rgba(252, 251, 248, 0) 60%);
+        }
+
+        .hero h1 {
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            margin: 0 auto;
+        }
+
+        /* Showcase Grid - PERBAIKAN: Grid Fleksibel */
+        .showcase-grid {
+            padding: 6.25rem 0;
+            display: grid;
+            /* PERBAIKAN: Grid yang menyesuaikan jumlah kolom */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            position: relative;
+        }
+
+        .showcase-grid::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 90%;
+            background-color: var(--accent-primary);
+            opacity: 0.03;
+            border-radius: 1.25rem;
+            z-index: -1;
+        }
+
+        /* --- Showcase Card - PERBAIKAN: Hapus Overlap --- */
+        .showcase-card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: transform var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .showcase-card:hover {
+            transform: translateY(-0.625rem);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-icon {
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .showcase-card h2 {
+            margin: 0 0 0.9375rem 0;
+            font-size: 1.5rem;
+        }
+
+        .showcase-card p {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .showcase-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .showcase-card ul li {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            color: var(--text-secondary);
+        }
+        .showcase-card:hover ul li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .showcase-card:hover ul li:nth-child(1) { transition-delay: 0.1s; }
+        .showcase-card:hover ul li:nth-child(2) { transition-delay: 0.2s; }
+        .showcase-card:hover ul li:nth-child(3) { transition-delay: 0.3s; }
+        .showcase-card:hover ul li:nth-child(4) { transition-delay: 0.4s; }
+
+        .card-image {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin-top: 1.25rem;
+        }
+
+        /* --- Terminal Demo --- */
+        .terminal-demo {
+            width: 100%;
+            background-color: #282c34;
+            border-radius: 8px;
+            margin-top: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .terminal-header {
+            background-color: #21252b;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot-red { background-color: #ff5f56; }
+        .dot-yellow { background-color: #ffbd2e; }
+        .dot-green { background-color: #27c93f; }
+        .terminal-body {
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #abb2bf;
+            flex-grow: 1;
+            min-height: 150px;
+        }
+        .terminal-line {
+            white-space: pre-wrap;
+            margin-bottom: 0.5rem;
+        }
+        .terminal-line .prompt { color: #61afef; }
+        .terminal-line .command { color: #e06c75; }
+        .terminal-line .output { color: #98c379; }
+        .terminal-line .url { color: #d19a66; font-weight: bold; }
+        .terminal-line .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: #abb2bf;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 1.25rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent-primary);
+            color: var(--bg-secondary);
+            font-family: var(--font-sans);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            cursor: pointer;
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+        .btn:disabled {
+            background-color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(113, 139, 122, 0.3);
+            background-color: #5d7365;
+        }
+        
+        .btn:focus {
+            outline: 2px solid var(--accent-secondary);
+            outline-offset: 2px;
+            background-color: #5d7365;
+        }
+
+        .philosophy {
+            padding: 6.25rem 0;
+            background-color: var(--bg-secondary);
+        }
+        .philosophy-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        .philosophy-item {
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .philosophy-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .philosophy-item h3 {
+            font-size: 1.25rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+        .philosophy-item p {
+            font-size: 1rem;
+            max-width: none;
+            color: var(--text-secondary);
+        }
+
+        .testimonials {
+            padding: 6.25rem 0;
+            background-color: var(--bg-primary);
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .testimonial-card {
+            background-color: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent-primary);
+        }
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .testimonial-card cite {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        .case-study {
+            padding: 6.25rem 0;
+            background-color: var(--bg-secondary);
+            text-align: center;
+        }
+        .case-study .container {
+            max-width: 800px;
+        }
+        .case-study h2 {
+            margin-bottom: 1rem;
+        }
+        .case-study p {
+            max-width: none;
+            margin-bottom: 2rem;
+        }
+        .case-study-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: gap 0.2s ease;
+        }
+        .case-study-link:hover {
+            gap: 1rem;
+        }
+
+        .cta {
+            padding: 6.25rem 0;
+            text-align: center;
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border-radius: 1.875rem 1.875rem 0 0;
+            margin-top: 5rem;
+        }
+
+        .cta h2 {
+            color: var(--bg-primary);
+        }
+
+        .cta p {
+            color: var(--bg-secondary);
+            opacity: 0.8;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+        }
+        .contact-form input::placeholder, .contact-form textarea::placeholder {
+            color: var(--text-muted);
+        }
+        .contact-form .btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            align-self: center;
+        }
+        .contact-form .btn:hover {
+            background-color: var(--bg-primary);
+        }
+
+        /* ===================================
+           RESPONSIVE DESIGN
+           =================================== */
+        @media (max-width: 1200px) {
+            .container { max-width: 960px; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .hero { padding: 5rem 0; }
+            .showcase-grid { padding: 3.75rem 0; }
+            .philosophy { padding: 3.75rem 0; }
+            .testimonials { padding: 3.75rem 0; }
+            .case-study { padding: 3.75rem 0; }
+            .cta { 
+                padding: 3.75rem 0; 
+                margin-top: 2.5rem;
+                border-radius: 1.25rem 1.25rem 0 0;
+            }
+            .showcase-card { padding: 2rem; }
+            .theme-toggle-wrapper { top: 10px; right: 10px; }
+            .terminal-body { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-wrapper">
+        <div class="theme-toggle" role="button" tabindex="0" aria-label="Toggle dark mode"></div>
+    </div>
+
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+
+    <a href="#main-content" class="skip-link">Langsung ke konten utama</a>
+
+    <header class="hero">
+        <div class="container">
+            <h1 class="animate-on-scroll">Membangun Jembatan Digital</h1>
+            <p class="animate-on-scroll delay-1">Gotong Royong untuk menciptakan solusi teknologi yang berdampak, satu kode pada satu waktu.</p>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <h2 class="visually-hidden">Produk Unggulan Kami</h2>
+        
+        <section class="showcase-grid container" aria-labelledby="showcase-heading">
+            <!-- Produk 1: Akses Online -->
+            <article class="showcase-card animate-on-scroll delay-1">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Akses Online</h2>
+                <p>Terlalu sering kesulitan membagikan progress kerja Anda? Akses Online adalah jembatan digital andal yang membawa aplikasi lokal Anda ke dunia, hanya dalam hitungan detik.</p>
+                <ul>
+                    <li>Subdomain unik & aman</li>
+                    <li>Konfigurasi otomatis</li>
+                    <li>Reverse proxy andal</li>
+                    <li>Open source</li>
+                </ul>
+                <div class="terminal-demo" id="terminal-demo">
+                    <div class="terminal-header">
+                        <div class="terminal-dot dot-red"></div>
+                        <div class="terminal-dot dot-yellow"></div>
+                        <div class="terminal-dot dot-green"></div>
+                    </div>
+                    <div class="terminal-body" id="terminal-body"></div>
+                </div>
+                <button class="btn" id="run-demo-btn">Jalankan Demo</button>
+            </article>
+
+            <!-- Produk 2: TrackMe -->
+            <article class="showcase-card animate-on-scroll delay-2">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M18 20V10" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 20V4" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 20V14" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>TrackMe Ecosystem</h2>
+                <p>Merasa sibuk belum tentu berarti berkembang. TrackMe adalah pendamping pribadi Anda untuk melacak pertumbuhan yang berarti, dengan evaluasi mingguan yang membantu Anda fokus pada esensi.</p>
+                <ul>
+                    <li>Wisenesday™ Streak</li>
+                    <li>Logging Sesi Kerja</li>
+                    <li>Analisis Jam Terbang</li>
+                    <li>Dashboard Personal</li>
+                </ul>
+                <a href="#" class="btn">Mulai Perjalanan</a>
+            </article>
+
+            <!-- Produk 3: KonXC Website -->
+            <article class="showcase-card animate-on-scroll delay-3">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M16 18L22 12L16 6" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 6L2 12L8 18" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>KonXC Website</h2>
+                <p>Website bukan hanya tampilan, ia adalah cerminan nilai. Kami membangun wajah digital yang tidak hanya cepat dan indah, tetapi juga menceritakan sebuah kisah tentang keahlian dan komitmen.</p>
+                <ul>
+                    <li>Static Site Generator</li>
+                    <li>Desain Responsif</li>
+                    <li>Performa Super Cepat</li>
+                    <li>Kode Bersih</li>
+                </ul>
+                <a href="#" class="btn">Lihat Kisahnya</a>
+            </article>
+
+            <!-- PROYEK BARU: Sistem Akademik -->
+            <article class="showcase-card animate-on-scroll delay-4">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 12v5a3 3 0 003 3h6a3 3 0 003-3v-5" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Sistem Akademik</h2>
+                <p>Platform modern untuk mengelola seluruh siklus akademik, dari pendaftaran hingga kelulusan. Dirancang untuk memberdayakan institusi pendidikan dengan data yang terstruktur dan proses yang efisien.</p>
+                <ul>
+                    <li>Manajemen Siswa & Guru</li>
+                    <li>Penjadwalan Otomatis</li>
+                    <li>Portal Orang Tua</li>
+                    <li>Laporan & Analitik</li>
+                </ul>
+                <a href="https://github.com/konxc/sistem-akademik" target="_blank" class="btn">Lihat Kodenya</a>
+            </article>
+
+            <!-- PROYEK BARU: Sistem Administrasi Sekolah -->
+            <article class="showcase-card animate-on-scroll delay-5">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="9,22 9,12 15,12 15,22" stroke="#718B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Sistem Administrasi Sekolah</h2>
+                <p>Solusi terpadu untuk menyederhanakan tata kelola sekolah sehari-hari. Dari kehadiran siswa hingga pengelolaan keuangan, semuanya dalam satu platform yang mudah diakses dan aman.</p>
+                <ul>
+                    <li>Absensi Digital</li>
+                    <li>Manajemen Keuangan</li>
+                    <li>Perpustakaan Digital</li>
+                    <li>Komunikasi Terpadu</li>
+                </ul>
+                <a href="https://github.com/budhihartati12-sketch/v0-website-for-school" target="_blank" class="btn">Jelajahi Proyek</a>
+            </article>
+
+            <!-- PROYEK BARU: Digital Workspace Ecosystem -->
+            <article class="showcase-card animate-on-scroll delay-6">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="9" cy="7" r="4" stroke="#4A4A4A" stroke-width="2"/>
+                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Digital Workspace Ecosystem</h2>
+                <p>Ruang kerja digital yang dirancang untuk kolaborasi tanpa batas. Menggabungkan alat komunikasi, manajemen proyek, dan berbagi dokumen dalam satu ekosistem yang selaras.</p>
+                <ul>
+                    <li>Kolaborasi Real-time</li>
+                    <li>Manajemen Tugas</li>
+                    <li>Integrasi Aplikasi</li>
+                    <li>Keamanan Enterprise</li>
+                </ul>
+                <a href="https://github.com/konxc/digital-workspace-ecosystem" target="_blank" class="btn">Lihat Kodenya</a>
+            </article>
+
+            <!-- PROYEK BARU: We Will Shine -->
+            <article class="showcase-card animate-on-scroll delay-7">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke="#7D8F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>We Will Shine</h2>
+                <p>Platform untuk mengakselerasi pertumbuhan personal dan profesional. Melalui kurasi konten, komunitas yang suportif, dan pelacakan perkembangan, kami membantu setiap individu untuk bersinar.</p>
+                <ul>
+                    <li>Kurasi Pembelajaran</li>
+                    <li>Komunitas Mentor</li>
+                    <li>Track Progress</li>
+                    <li>Sertifikasi Digital</li>
+                </ul>
+                <a href="https://github.com/itif-Syuhada/we-will-shine" target="_blank" class="btn">Jelajahi Proyek</a>
+            </article>
+
+        </section>
+
+        <section class="philosophy animate-on-scroll">
+            <div class="container">
+                <h2 class="animate-on-scroll">Filosofi Kami</h2>
+                <p class="animate-on-scroll delay-1" style="text-align: center; max-width: none;">Di balik setiap baris kode, ada sebuah cerita tentang kolaborasi dan kebersamaan.</p>
+                <div class="philosophy-content">
+                    <div class="philosophy-item animate-on-scroll delay-2">
+                        <h3>Gotong Royong Digital</h3>
+                        <p>Kami percaya bahwa teknologi terbaik lahir dari kebersamaan, bukan persaingan.</p>
+                    </div>
+                    <div class="philosophy-item animate-on-scroll delay-3">
+                        <h3>Kedaulatan Data</h3>
+                        <p>Memberdayakan UMKM dan individu untuk memiliki kontrol penuh atas aset digital mereka.</p>
+                    </div>
+                    <div class="philosophy-item animate-on-scroll delay-4">
+                        <h3>Keterbukaan</h3>
+                        <p>Kami mendukung ekosistem open source karena berbagi adalah cara terbaik untuk belajar dan berkembang.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials animate-on-scroll">
+            <div class="container">
+                <h2 class="animate-on-scroll">Suara Komunitas</h2>
+                <p class="animate-on-scroll delay-1" style="text-align: center; max-width: none;">Kami bangga menjadi bagian dari perjalanan mereka.</p>
+                <div class="testimonials-grid">
+                    <article class="testimonial-card animate-on-scroll delay-2">
+                        <p>"Akses Online menghemat waktu saya berjam-jam. Tidak perlu lagi pusing dengan konfigurasi network yang rumit."</p>
+                        <cite>– Rini, Full Stack Developer</cite>
+                    </article>
+                    <article class="testimonial-card animate-on-scroll delay-3">
+                        <p>"TrackMe benar-benar mengubah cara saya melihat produktivitas. Saya jadi lebih fokus pada pertumbuhan, bukan sekadar sibuk."</p>
+                        <cite>– Budi, Content Creator</cite>
+                    </article>
+                    <article class="testimonial-card animate-on-scroll delay-4">
+                        <p>"Website yang dibuat tim KonXC tidak hanya cepat, tapi juga menceritakan kisah brand kami dengan sempurna. Sangat puas!"</p>
+                        <cite>– Anisa, Founder Startup Lokal</cite>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="case-study animate-on-scroll">
+            <div class="container">
+                <h2 class="animate-on-scroll">Studi Kasus: Membangun Portal UMKM</h2>
+                <p class="animate-on-scroll delay-1">Lihat bagaimana kami membantu sebuah UMKM kerajinan lokal memperluas jangkauan pasar mereka dari 0 ke 1000+ pelanggan dalam 3 bulan melalui platform digital yang kami bangun.</p>
+                <a href="#" class="case-study-link animate-on-scroll delay-2">
+                    Baca Studi Kasus Lengkap
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="cta animate-on-scroll">
+        <div class="container">
+            <h2>Mari Wujudkan Ide Bersama</h2>
+            <p>Kami percaya pada kolaborasi dan teknologi yang memanusiakan. Ceritakan idemu.</p>
+            <form class="contact-form animate-on-scroll delay-1" action="#" method="POST">
+                <input type="text" name="name" placeholder="Nama Lengkap Anda" required>
+                <input type="email" name="email" placeholder="Email Aktif" required>
+                <textarea name="message" rows="5" placeholder="Ceritakan tentang ide Anda..." required></textarea>
+                <button type="submit" class="btn">Mulai Percakapan</button>
+            </form>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Dark Mode Logic ---
+            const html = document.documentElement;
+            const themeToggle = document.querySelector('.theme-toggle');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            html.setAttribute('data-theme', currentTheme);
+
+            const setTheme = (theme) => {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            };
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+            
+            themeToggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    themeToggle.click();
+                }
+            });
+
+            // --- Loading Screen ---
+            window.addEventListener('load', function() {
+                const loaderWrapper = document.querySelector('.loader-wrapper');
+                loaderWrapper.classList.add('hidden');
+            });
+
+            // --- Intersection Observer for Animations ---
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            const options = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, options);
+            elementsToAnimate.forEach(element => observer.observe(element));
+
+            // --- Interactive Terminal Demo Logic ---
+            const runDemoBtn = document.getElementById('run-demo-btn');
+            const terminalBody = document.getElementById('terminal-body');
+            
+            const demoSteps = [
+                { text: '<span class="prompt">user@konxc:~$</span> <span class="command">./akses create my-awesome-app</span>', delay: 500 },
+                { text: '<span class="output">[INFO] Initializing tunnel creation...</span>', delay: 800 },
+                { text: '<span class="output">[INFO] Connecting to KonXC cloud...</span>', delay: 800 },
+                { text: '<span class="output">[SUCCESS] Tunnel created successfully!</span>', delay: 600 },
+                { text: '<span class="output">Your app is now live at:</span>', delay: 400 },
+                { text: '<span class="url">https://my-awesome-app.akses.online</span>', delay: 400 },
+                { text: '<span class="prompt">user@konxc:~$</span> <span class="cursor"></span>', delay: 0 }
+            ];
+
+            function typeLine(html, callback) {
+                terminalBody.innerHTML += `<div class="terminal-line">${html}</div>`;
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+                if (callback) setTimeout(callback, 100);
+            }
+
+            function runDemo() {
+                runDemoBtn.disabled = true;
+                runDemoBtn.textContent = 'Menjalankan...';
+                terminalBody.innerHTML = '';
+
+                let stepIndex = 0;
+                function nextStep() {
+                    if (stepIndex < demoSteps.length) {
+                        const step = demoSteps[stepIndex];
+                        typeLine(step.text, () => {
+                            setTimeout(nextStep, step.delay);
+                        });
+                        stepIndex++;
+                    } else {
+                        runDemoBtn.textContent = 'Jalankan Lagi';
+                        runDemoBtn.disabled = false;
+                    }
+                }
+                nextStep();
+            }
+
+            runDemoBtn.addEventListener('click', runDemo);
+        });
+    </script>
+</body>
+</html>
